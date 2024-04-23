@@ -13,7 +13,7 @@ python3 mxcppfy.py <filename> [directory]
 | Name      | Description |
 | ----------- | ----------- |
 | `<filename>`      | The name of the files you want to merge. Required. |
-| `[directory]`  | (Optional) Absolute path of the directory where the .c and .cpp files are located. **Default: .** |
+| `[directory]`  | (Optional) Absolute path of the directory where the .c and .cpp files are located. **Default: ./Core/Src** |
 
 ## Upcoming updates
 - Better argument testing and general robustness improvements
