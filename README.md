@@ -7,6 +7,10 @@ Requires Python 3.x
 ## Usage
 Either drop `mxcppfy.py` into your desired folder and run it with just the filename as the argument, or include the absolute path of the directory.
 ```
+python mxcppfy.py <filename> [directory]
+```
+Alternatively, if you have python 3.x binded to python3:
+```
 python3 mxcppfy.py <filename> [directory]
 ```
 ### Arguments
