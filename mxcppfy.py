@@ -3,6 +3,12 @@ import sys
 
 
 def merge_files(filename_, directory_='.'):
+    """_summary_
+
+    Args:
+        filename_ (_type_): Name of the files to merge.
+        directory_ (str, optional): Path of the files to merge. Defaults to './Core/Src'.
+    """
     # Construct file paths
     cpp_file = os.path.join(directory_, filename_ + '.cpp')
     cpp_bak_file = os.path.join(directory_, filename_ + '.cpp.bak')
@@ -11,13 +17,13 @@ def merge_files(filename_, directory_='.'):
     # Checking that at least the c file exists
     if not os.path.exists(c_file):
         print(f'{c_file} cannot be found.')
-        exit(1)
+        sys.exit(1)
 
     # If no cpp file exists, the file is simply copied from the c file
     if not os.path.exists(cpp_file):
         os.replace(c_file, cpp_file)
         print(f'{cpp_file} has been created from {c_file}!')
-        exit(0)
+        sys.exit(0)
 
     # Checking if a previous .bak exists and removing it
     if os.path.exists(cpp_bak_file):
@@ -27,15 +33,18 @@ def merge_files(filename_, directory_='.'):
     os.rename(cpp_file, cpp_bak_file)
 
     # Create new .cpp file
-    with open(c_file, 'r') as c_file_obj, open(cpp_bak_file, 'r') as cpp_bak_file_obj, open(cpp_file,
-                                                                                            'w') as cpp_file_obj:
+    with open(c_file, 'r', encoding="utf8"
+              ) as c_file_obj, open(cpp_bak_file, 'r', encoding="utf8"
+                                    ) as cpp_bak_file_obj, open(cpp_file, 'w', encoding="utf8"
+                                                                ) as cpp_file_obj:
         # Flag to set when we're either copying from the .cpp or we're ignoring the .c file
         copying_cpp = False
         for line in c_file_obj:
             # If we reach the start of a USER CODE block we need to switch to the .cpp file
             if '/* USER CODE BEGIN' in line:
                 # Capturing the USER CODE block identifier
-                block_name = line.split('/* USER CODE BEGIN ')[1].split(' */')[0]
+                block_name = line.split(
+                    '/* USER CODE BEGIN ')[1].split(' */')[0]
                 for cpp_bak_line in cpp_bak_file_obj:
                     # Checking the block name is essential to avoid duplicates
                     if f'/* USER CODE BEGIN {block_name}' in cpp_bak_line:
