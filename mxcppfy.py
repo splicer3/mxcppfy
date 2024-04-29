@@ -42,19 +42,20 @@ def merge_files(filename_, directory_='.'):
         for line in c_file_obj:
             # If we reach the start of a USER CODE block we need to switch to the .cpp file
             if '/* USER CODE BEGIN' in line:
+                cpp_file_obj.write(line)
                 # Capturing the USER CODE block identifier
                 block_name = line.split(
                     '/* USER CODE BEGIN ')[1].split(' */')[0]
                 for cpp_bak_line in cpp_bak_file_obj:
-                    # Checking the block name is essential to avoid duplicates
-                    if f'/* USER CODE BEGIN {block_name}' in cpp_bak_line:
-                        # The .cpp copy officially starts, right from the next two lines
-                        copying_cpp = True
                     if copying_cpp:
                         cpp_file_obj.write(cpp_bak_line)
                         # Note that the break happens AFTER writing the USER CODE END to the file
                         if f'/* USER CODE END {block_name}' in cpp_bak_line:
                             break
+                        # Checking the block name is essential to avoid duplicates
+                    elif f'/* USER CODE BEGIN {block_name}' in cpp_bak_line:
+                        # The .cpp copy officially starts
+                        copying_cpp = True
                 # We can skip lines until we evenntually get to the right block name
             elif copying_cpp:
                 # If we reach the end of a USER CODE section we can resume copying from the .c file
